@@ -35,28 +35,44 @@ const getRangeOfDownloads = (data) => {
 
 // task 1(3)
 
-const DownlInAustralia = (str) => parseInt(str.split(';').at(5), 10);
+// const DownlInAustralia = (str) => parseInt(str.split(';').at(5), 10);
 
 const compare = (a, b) => {
-  if (a[0] > b[0]) {
+  if (a[1] > b[1]) {
     return -1;
-  } if (a[0] === b[0]) {
+  } if (a[1] === b[1]) {
     return 0;
   }
   return 1;
 };
 
-const name1 = (str) => DownlInAustralia(str).sort(compare);
-const getThirstThree = (str) => name1(str).slice(0, 3);
+const getNameAndDwnldAust = (data) => {
+  const temp = data.map((str) => {
+    const index = str.split(';');
+    const auString = [index[0], parseInt(index[6], 10)];
+    return auString;
+  });
+  return temp;
+};
+const output = (data) => {
+  const y = getNameAndDwnldAust(data).slice(0, 3).map((array) => array[0]).sort(compare);
+  return y;
+};
+
+// const getAustralia = (data) => {
+//    const temp = data.map(({ name, Australia }) => [Australia, name]).sort(compare);
+//    return temp.slice(0, 3).map(([, name]) => name).sort();
+// };
 
 // task 1
 const tableParsing = (content) => {
   const data = normalizeData(content);
   const [name, developer] = getMaxAvgRating(data);
   const [maxDownl, minDownl] = getRangeOfDownloads(data);
+  const topAustralia = output(data).sort();
   console.log(`General top messenger: ${name}, Owner: ${developer}`);
   console.log(`Download count: Max count: ${maxDownl}, Min count: ${minDownl}`);
-  console.log(getMaxDwnlInAstralia(data));
+  console.log(`Top-3 Australia: ${topAustralia.join(', ')}`);
 };
 
 // task 2
